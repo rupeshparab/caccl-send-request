@@ -1,0 +1,27 @@
+{
+  "name": "caccl-send-request",
+  "version": "1.0.0",
+  "description": "The default request sender used throughout the CACCL project.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/harvard-edtech/caccl-send-request.git"
+  },
+  "keywords": [
+    "HTTPS",
+    "HTTP",
+    "send",
+    "request",
+    "request",
+    "CACCL"
+  ],
+  "author": "Gabriel Abrams <gabeabrams@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/harvard-edtech/caccl-send-request/issues"
+  },
+  "homepage": "https://github.com/harvard-edtech/caccl-send-request#readme"
+}
