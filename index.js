@@ -1,7 +1,8 @@
 const axios = require('axios');
 const qs = require('qs');
-const CACCLError = require('../caccl-error/index.js'); // TODO: switch to actual library
-const errorCodes = require('./errorCodes.js');
+const CACCLError = require('caccl-error');
+
+const errorCodes = require('./errorCodes');
 
 /**
  * Sends and retries an http request
