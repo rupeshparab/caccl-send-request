@@ -1,8 +1,12 @@
 const axios = require('axios');
 const qs = require('qs');
 const CACCLError = require('caccl-error');
+const https = require('https');
 
 const errorCodes = require('./errorCodes');
+
+// Create an agent to ignore unauthorize ssl issues
+const ignoreSSLIssuesAgent = new https.Agent({ rejectUnauthorized: false });
 
 /**
  * Sends and retries an http request
@@ -13,6 +17,8 @@ const errorCodes = require('./errorCodes');
  * @param {object} [params] - body/data to include in the request
  * @param {number} [numRetries=0] - number of times to retry the request if it
  *   fails
+ * @param {boolean} [ignoreSSLIssues=false] - if true, ignores SSL certificate
+ *   issues
  * @return {Promise.<CACCLErrror|object>} Returns { body, status, headers } on
  *   success, CACCLError on failure
  */
@@ -42,11 +48,19 @@ const sendRequest = (options) => {
   // Create data (only if not GET)
   const data = (method !== 'GET' ? stringifiedParams : null);
 
+  // Prep to ignore ssl issues
+  const httpsAgent = (
+    options.ignoreSSLIssues
+      ? ignoreSSLIssuesAgent
+      : undefined
+  );
+
   // Send request
   return axios({
     method,
     url,
     data,
+    httpsAgent,
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
