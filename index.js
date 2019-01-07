@@ -81,6 +81,14 @@ const sendRequest = (options) => {
         return sendRequest(newOptions);
       }
 
+      // Self-signed certificate error:
+      if (err.message.includes('self signed certificate')) {
+        throw new CACCLError({
+          message: 'We refused to send a request because the receiver has self-signed certificates.',
+          code: errorCodes.selfSigned,
+        })
+      }
+
       // No tries left
       throw new CACCLError({
         message: 'We encountered an error when trying to send a network request. If this issue persists, contact an admin.',
