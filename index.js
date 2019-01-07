@@ -86,7 +86,7 @@ const sendRequest = (options) => {
         throw new CACCLError({
           message: 'We refused to send a request because the receiver has self-signed certificates.',
           code: errorCodes.selfSigned,
-        })
+        });
       }
 
       // No tries left
