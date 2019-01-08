@@ -18,7 +18,7 @@ const ignoreSSLIssuesAgent = new https.Agent({ rejectUnauthorized: false });
  * @param {number} [numRetries=0] - number of times to retry the request if it
  *   fails
  * @param {boolean} [ignoreSSLIssues=false] - if true, ignores SSL certificate
- *   issues
+ *   issues. If host is localhost:8088, this will default to true
  * @return {Promise.<CACCLErrror|object>} Returns { body, status, headers } on
  *   success, CACCLError on failure
  */
@@ -45,12 +45,19 @@ const sendRequest = (options) => {
     url = `https://${options.host}${options.path}${query}`;
   }
 
+  // Default ignoreSSLIssues
+  const ignoreSSLIssues = (
+    options.ignoreSSLIssues !== undefined
+      ? options.ignoreSSLIssues
+      : options.host === 'localhost:8088'
+  );
+
   // Create data (only if not GET)
   const data = (method !== 'GET' ? stringifiedParams : null);
 
   // Prep to ignore ssl issues
   const httpsAgent = (
-    options.ignoreSSLIssues
+    ignoreSSLIssues
       ? ignoreSSLIssuesAgent
       : undefined
   );
