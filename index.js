@@ -8,6 +8,12 @@ const errorCodes = require('./errorCodes');
 // Create an agent to ignore unauthorize ssl issues
 const ignoreSSLIssuesAgent = new https.Agent({ rejectUnauthorized: false });
 
+// Check if we should send cross-domain credentials
+const sendCrossDomainCredentials = !!(
+  process.env.DEV
+  || process.env.NODE_ENV === 'development'
+);
+
 /**
  * Sends and retries an http request
  * @author Gabriel Abrams
@@ -51,9 +57,6 @@ const sendRequest = (options) => {
       ? options.ignoreSSLIssues
       : options.host === 'localhost:8088'
   );
-
-  // Check if we should send cross-domain credentials
-  const sendCrossDomainCredentials = !!process.env.DEV;
 
   // Create data (only if not GET)
   const data = (method !== 'GET' ? stringifiedParams : null);
