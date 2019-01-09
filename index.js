@@ -53,7 +53,7 @@ const sendRequest = (options) => {
   );
 
   // Check if we should send cross-domain credentials
-  const sendCrossDomainCredentials = (options.host === 'localhost:8088');
+  const sendCrossDomainCredentials = !!process.env.DEV;
 
   // Create data (only if not GET)
   const data = (method !== 'GET' ? stringifiedParams : null);
