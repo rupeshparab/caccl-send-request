@@ -52,6 +52,9 @@ const sendRequest = (options) => {
       : options.host === 'localhost:8088'
   );
 
+  // Check if we should send cross-domain credentials
+  const sendCrossDomainCredentials = (options.host === 'localhost:8088');
+
   // Create data (only if not GET)
   const data = (method !== 'GET' ? stringifiedParams : null);
 
@@ -71,6 +74,7 @@ const sendRequest = (options) => {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
+    withCredentials: sendCrossDomainCredentials,
   })
     .catch((err) => {
       // Axios throws an error if the request status indicates an error
