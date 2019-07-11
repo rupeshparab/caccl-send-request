@@ -21,6 +21,7 @@ const sendCrossDomainCredentials = !!(
  * @param {string} path - path to send request to
  * @param {string} [method=GET] - http method to use
  * @param {object} [params] - body/data to include in the request
+ * @param {object} [headers] - headers to include in the request
  * @param {number} [numRetries=0] - number of times to retry the request if it
  *   fails
  * @param {boolean} [ignoreSSLIssues=false] - if true, ignores SSL certificate
@@ -68,15 +69,17 @@ const sendRequest = (options) => {
       : undefined
   );
 
+  // Update headers
+  const headers = options.headers || {};
+  headers['Content-Type'] = 'application/x-www-form-urlencoded';
+
   // Send request
   return axios({
     method,
     url,
     data,
     httpsAgent,
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
+    headers,
     withCredentials: sendCrossDomainCredentials,
   })
     .catch((err) => {
