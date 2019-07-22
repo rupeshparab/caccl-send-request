@@ -59,9 +59,6 @@ const sendRequest = (options) => {
       : options.host === 'localhost:8088'
   );
 
-  // Create data (only if not GET)
-  const data = (method !== 'GET' ? stringifiedParams : null);
-
   // Prep to ignore ssl issues
   const httpsAgent = (
     ignoreSSLIssues
@@ -71,7 +68,16 @@ const sendRequest = (options) => {
 
   // Update headers
   const headers = options.headers || {};
-  headers['Content-Type'] = 'application/x-www-form-urlencoded';
+  let data = null;
+  if (!headers['Content-Type']) {
+    // Form encoded
+    headers['Content-Type'] = 'application/x-www-form-urlencoded';
+    // Add data if applicable
+    data = (method !== 'GET' ? stringifiedParams : null);
+  } else {
+    // JSON encode
+    data = options.params;
+  }
 
   // Send request
   return axios({
