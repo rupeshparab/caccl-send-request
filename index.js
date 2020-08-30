@@ -42,14 +42,18 @@ const sendRequest = (options) => {
     arrayFormat: 'brackets',
   });
 
+  const proto = options.proto || 'https';
+
   // Create url (include query if GET)
   const query = (method === 'GET' ? `?${stringifiedParams}` : '');
   let url;
-  if (!options.host) {
+  if (!options.host && !options.basePath) {
     // No host included at all. Just send to a path
     url = `${options.path}${query}`;
+  } else if (options.basePath) {
+    url = `${options.basePath}${options.path}${query}`;
   } else {
-    url = `https://${options.host}${options.path}${query}`;
+    url = `${proto}://${options.host}${options.path}${query}`;
   }
 
   // Default ignoreSSLIssues
